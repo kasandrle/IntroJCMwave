@@ -1,0 +1,27 @@
+Project {
+  InfoLevel = 3
+  StorageFormat = Binary
+  Electromagnetics {
+    TimeHarmonic {
+      Scattering {
+        Accuracy {
+          Precision = 0.01
+        }
+      }
+    }
+  }
+}
+
+
+
+PostProcess {
+  FourierTransform {
+    FieldBagPath = "project_results/fieldbag.jcm"
+    OutputFileName = "project_results/ft.jcm"
+    NormalDirection = Y
+  }
+}
+
+
+
+

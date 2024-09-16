@@ -1,0 +1,124 @@
+
+<?
+#from periodictable import xsf
+#for n, ii in enumerate(keys['stack']):
+
+#    if ii == 'vacuum':
+#       keys['permittivity_'] = 1.0
+#       keys['name_'] = ii
+#       keys['id_'] = 1
+#    if ii == 'SiO2':
+#       siorefr=np.conjugate((xsf.index_of_refraction(ii,energy=keys["energy"],density=keys["SiO2dens"]))**2)
+#       keys['permittivity_'] = siorefr#((1.-0.00120179937) + 0.000203664487*1j)**2
+#       keys['name_'] = ii
+#       keys['id_'] = 2
+#    if ii == 'Si3N4':
+#       chu=np.conjugate((xsf.index_of_refraction(ii,energy=keys["energy"],density=keys["Si3N4dens"]))**2)
+#       #chu2 = chu.real + (chu.imag+(chu.imag*0.5))*1j
+#       keys['permittivity_'] = chu#((1-0.00242410693)+0.000816115062*1j)**2#chu2
+#       keys['name_'] = ii
+#       keys['id_'] = 3
+#    if ii == 'Si':
+#       sirefr=np.conjugate((xsf.index_of_refraction(ii,energy=keys["energy"],density=2.33))**2)
+#       keys['permittivity_'] = sirefr#((1-0.00170275685)+  0.000399559445*1j)**2
+#       keys['name_'] = ii
+#       keys['id_'] = 4
+#print(keys['nk'])
+for n, ii in enumerate(keys['nk']):
+    keys['permittivity_'] = ii**2
+    keys['RelPermeability_'] = 1 #keys['RelPermeability'][n]
+    keys['name_'] = keys['name_domain'][n]
+    keys['id_'] = n+1
+    
+
+    ?>
+    Material {
+      Name = "%(name_)s"
+      Id = %(id_)i
+      RelPermittivity = %(permittivity_)e
+      RelPermeability = %(RelPermeability_)e
+}
+#<?
+#from periodictable import xsf
+#import numpy as np
+#
+#siorefr=np.conjugate((xsf.index_of_refraction('SiO2',energy=keys["energy"],density=keys["SiO2dens"]))**2)
+##print( siorefr)
+#keys['permittivity_SiO2']=siorefr
+#chu=np.conjugate((xsf.index_of_refraction('Si3N4',energy=keys["energy"],density=keys["Si3N4dens"]))**2)
+##print( chu)
+#keys['permittivity_Si3N4'] = chu
+#?>
+# Material {
+#      Name = "SiO2"
+#      Id = 6
+#  #    RelPermittivity = 2
+#      RelPermeability = 1.0
+#      RelPermittivity {
+#    Python {
+#        
+#      Expression = "
+#                    leerzeile = 1;
+#                    
+#                    def abstand(x,y,x1, y1, x2,y2):
+#                        x1x2=x1-x2
+#                        y1y2=y1-y2
+#                        abs_richtung=power(power(x1x2,2)+power(y1y2,2),0.5);
+#                        d = power(power((x-x1)*y1y2-(y-y1)*x1x2,2),0.5)/abs_richtung;
+#                        lam = ((x1-x)*x1x2+(y1-y)*y1y2)/((-1)*(x1x2*x1x2)+(y1y2*y1y2))
+#                        d_ecke = power((power(x-x1,2)+power(y-y1,2)),0.5)
+#                        if abs(y1y2)<5e-9:
+#                            lam=lam*(-1)
+#                        return d, lam, d_ecke
+#                        
+#                    d = max_a##
+##
+#                   for i in range(shape(points_oxid_x)[0]):
+#                        if i>1 and i < shape(points_oxid_x)[0]-1:
+#                           d_temp, lam, d_ecke=abstand(X[0],X[1],points_oxid_x[i],points_oxid_y[i],points_oxid_x[i+1],points_oxid_y[i+1])
+#                           
+#                            if d_temp < d and 0<=lam <= 1:
+#                                d = d_temp
+#                            elif d_ecke<d:
+#                                d = d_ecke
+#                    
+#                     
+#                    #print(X[0])
+#                    #print(X[1])
+#                    value= n1+(n2-n1)*(1-power(d/max_a,g));
+#                    
+#                    
+#                    value = value*eye(3,3);
+#                    
+#      "
+#      Parameter {
+#        Name = "n2"
+#        VectorValue = %(permittivity_SiO2)e
+#      }
+#      Parameter {
+#       Name = "n1"
+#       VectorValue = %(permittivity_Si3N4)e
+#      }
+#      Parameter {
+#        Name = "g"
+#        VectorValue = %(exponent_g)e
+#      }
+#      Parameter {
+#        Name = "points_oxid_x"
+#        VectorValue = %(points_oxid_x)e
+#      }
+#      Parameter {
+#        Name = "points_oxid_y"
+#        VectorValue = %(points_oxid_y)e
+#      }
+#      
+#      Parameter {
+#        Name = "max_a"
+#        VectorValue = %(max_a)e
+#      }#
+#
+#      
+#      }
+#      }
+#}
+  

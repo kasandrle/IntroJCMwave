@@ -1,0 +1,85 @@
+<?
+if len(keys["points_to_Si_Si3N4"]) == 1:
+    keys["points_to_Si_Si3N4"] = keys['points_substrate']
+    keys['prior']=1
+else:
+    keys['prior']=7
+?>
+
+Layout {
+Name = "periodic_line"
+UnitOfLength = %(uol1)e
+
+Polygon {
+Name = "ComputationalDomain"
+DomainId = 1
+Priority = -1
+SidelengthConstraint = %(slc)e
+Points = %(points_cd)e
+BoundarySegment {
+Number = 1
+BoundaryClass = TransparentBoundary
+}
+BoundarySegment {
+Number = 2
+BoundaryClass = Periodic
+}
+BoundarySegment {
+Number = 3
+BoundaryClass = TransparentBoundary
+}
+BoundarySegment {
+Number = 4
+BoundaryClass = Periodic
+}
+}
+
+Polygon {
+Name = "substrate"
+DomainId = 5
+Priority = 1
+SideLengthConstraint = %(slc)e
+Points = %(points_substrate)e
+
+}
+
+Polygon {
+Name = "substrate_to"
+DomainId = 4
+Priority = %(prior)e
+SideLengthConstraint = %(slc)e
+Points = %(points_to_Si_Si3N4)e
+
+}
+
+
+Polygon {
+Name = "Line"
+DomainId = 3
+Priority = 4
+SideLengthConstraint = %(slc)e
+Points = %(points_line_komplet)e
+
+}
+
+Polygon {
+Name = "Oxidlayer"
+DomainId = 7 #7 for graded elese 2
+Priority = 3
+SideLengthConstraint = %(slc)e
+Points = %(points_oxid_komplet)e
+
+}
+
+Polygon {
+Name = "Contlayer"
+DomainId = 6 #6 for graded elese 2
+Priority = 2
+SideLengthConstraint = %(slc)e
+Points = %(points_cont_komplet)e
+
+}
+
+
+
+}
