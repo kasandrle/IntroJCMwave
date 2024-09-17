@@ -1,0 +1,57 @@
+
+
+    Material {
+      Name = "vacuum"
+      Id = 1
+      RelPermittivity = 1
+      RelPermeability = 1
+}
+
+  
+
+    Material {
+      Name = "oxide layer"
+      Id = 2
+      RelPermittivity = [( 0.98379801,  0.0059044684) ( 0,  0) ( 0,  0);
+( 0,  0) ( 0.98379801,  0.0059044684) ( 0,  0);
+( 0,  0) ( 0,  0) ( 0.98379801,  0.0059044684)]
+      RelPermeability = 1
+}
+
+  
+
+    Material {
+      Name = "grating"
+      Id = 3
+      RelPermittivity = (0.980377561737373, 0.00906768644580105)
+      RelPermeability = 1
+}
+
+  
+
+    Material {
+      Name = "layer"
+      Id = 4
+      RelPermittivity = (0.988793383677429, 0.00439538325432356)
+      RelPermeability = 1
+}
+
+  
+
+    Material {
+      Name = "substrate"
+      Id = 5
+      RelPermittivity = (0.995254561979355, 0.000348460581034491)
+      RelPermeability = 1
+}
+
+  
+
+    Material {
+      Name = "cont"
+      Id = 6
+      RelPermittivity = 1
+      RelPermeability = 1
+}
+
+  
