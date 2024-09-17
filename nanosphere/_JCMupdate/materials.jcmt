@@ -1,0 +1,16 @@
+
+<?
+
+for n, ii in enumerate(keys['nk']):
+    keys['permittivity_'] = ii**2
+    keys['name_'] = keys['name_domain'][n]
+    keys['id_'] = n+1
+    
+
+    ?>
+    Material {
+      Name = "%(name_)s"
+      Id = %(id_)i
+      RelPermittivity = %(permittivity_)e
+      RelPermeability = 1.0
+}

@@ -1,0 +1,68 @@
+Project {
+  Electromagnetics {
+    TimeHarmonic {
+      Scattering {
+        FieldComponents = Electric
+        Accuracy {
+          FiniteElementDegree = 3         
+        }
+      }
+    }
+  }
+}
+#PostProcess {
+#  DensityIntegration {
+#    FieldBagPath = "project_results/fieldbag.jcm"
+#    OutputFileName = "project_results/energy.jcm"
+#   OutputQuantity = ElectricFieldEnergy
+# }
+#}
+#PostProcess {
+#  FluxIntegration {
+#    FieldBagPath = "project_results/fieldbag.jcm"
+#    OutputFileName = "project_results/scattered_energy_flux.jcm"
+#    OutputQuantity = ElectromagneticFieldEnergyFlux
+#    InterfaceType = ExteriorDomain
+#  }
+#}
+
+PostProcess {
+  FourierTransform {
+    NormalDirection = Y
+    FieldBagPath = "project_results/fieldbag.jcm"
+    OutputFileName = "project_results/reflected_diffraction_orders.jcm"
+    Format = JCM-ASCII
+  }
+}
+#PostProcess {
+#  FarField {
+#    #NormalDirection = Y
+#    FieldBagPath = "project_results/fieldbag.jcm"
+#    OutputFileName = "project_results/farfield.jcm"
+#    #Format = JCM-ASCII
+#  }
+#}
+
+
+PostProcess {
+  ExportFields {
+    FieldBagPath = "project_results/fieldbag.jcm"
+    OutputFileName = "project_results/c_xy.jcm"
+    Cartesian {
+      NGridPointsX = 300 #[-447.5e-9 : 5e-9 : 450e-9]
+      NGridPointsY = 300 #[-450.0e-9 : 5e-9 : 450e-9]
+      GridPointsZ = 0
+    }
+  }
+}
+PostProcess {
+  ExportFields {
+    FieldBagPath = "project_results/fieldbag.jcm"
+    OutputFileName = "project_results/c_xz.jcm"
+    Cartesian {
+      NGridPointsX = 300 #[-447.5e-9 : 5e-9 : 450e-9]
+      NGridPointsZ = 300 #[-450.0e-9 : 5e-9 : 450e-9]
+      GridPointsY = 0
+    }
+  }
+}

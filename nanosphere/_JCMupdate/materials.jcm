@@ -1,0 +1,32 @@
+
+
+    Material {
+      Name = "vacuum"
+      Id = 1
+      RelPermittivity = 1
+      RelPermeability = 1.0
+}
+    Material {
+      Name = "oleic_1"
+      Id = 2
+      RelPermittivity = (0.998037334208118, 0.000135666694227728)
+      RelPermeability = 1.0
+}
+    Material {
+      Name = "oleic_2"
+      Id = 3
+      RelPermittivity = (0.995342380355034, 0.000310000228140271)
+      RelPermeability = 1.0
+}
+    Material {
+      Name = "core"
+      Id = 4
+      RelPermittivity = (0.993124890523295, 0.00525433317554779)
+      RelPermeability = 1.0
+}
+    Material {
+      Name = "substrate"
+      Id = 5
+      RelPermittivity = 1
+      RelPermeability = 1.0
+}
