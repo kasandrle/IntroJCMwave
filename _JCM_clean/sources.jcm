@@ -1,0 +1,25 @@
+
+
+SourceBag {
+
+  Source {
+    ElectricFieldStrength {
+      PlaneWave {
+        Lambda0 = 4.35032275204211e-09
+        SP = [1 0] #[0, 1]
+        #Amplitude = [0 1 0]
+        ThetaPhi = [0.5, 90]
+        #Sigma = [0 0]
+        3DTo2D = yes
+        #Direction = -Z
+        Incidence = FromBelow
+      }
+    }
+  }
+}
+
+
+
+
+
+
