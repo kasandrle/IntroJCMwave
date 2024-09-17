@@ -1,0 +1,24 @@
+/* <BLOBHead>
+__BLOBTYPE__=Table
+__MODE__=TEXT
+__OPTIONS__=LHExchanged
+__OWNER__=JCMwave
+__TAG__=48ca9fc17439ffe061c081675d529f3f
+__VERSION__=1.0.0
+Column1:Name=DomainIdFirst
+Column1:Type=int
+Column2:Name=DomainIdSecond
+Column2:Type=int
+Column3:Name=ElectromagneticFieldEnergyFlux_1
+Column3:Type=doublecomplex
+Column4:Name=AbsElectromagneticFieldEnergyFlux_1
+Column4:Type=double
+Title=ElectromagneticFieldEnergyFlux
+<I>NColumns=4
+<I>NRows=1
+*/
+# Row 1
+1
+1
+(1.191647066934313e-16,-1.674073293165744e-17)
+1.213697712166681e-16

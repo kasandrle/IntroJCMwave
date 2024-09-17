@@ -1,0 +1,64 @@
+Layout2D {
+  UnitOfLength = 1e-09
+  MeshOptions {
+    MaximumSideLength = 4.23154260864165
+  }
+  CoordinateSystem = Cylindrical
+  BoundaryConditions {
+    Boundary {
+      Direction = All 
+      Class = Transparent
+    }
+  }
+  Objects {
+    Parallelogram {
+      Name = "CD"
+      Height = 210
+      Width = 110
+      Port = West
+      GlobalPosition = [0 0]
+      DomainId = 1
+      Priority = ComputationalDomain      
+    }
+    CircleSector {
+      Radius = 100
+      AngleRange = [-90 90]
+      GlobalPosition = [0 0]
+      DomainId = 2
+      Priority = 1
+      RefineAll = 4
+      MeshOptions {
+        MaximumSideLength = 4.23154260864165
+      }
+    }
+
+    CircleSector {
+      Radius = 50
+      AngleRange = [-90 90]
+      GlobalPosition = [0 0]
+      DomainId = 4
+      Priority = 2
+      RefineAll = 4
+      MeshOptions {
+        MaximumSideLength = 4.23154260864165
+      }
+    }
+    
+    #Parallelogram {
+    #  Height = 900
+    #  Width = 450
+    #  Port = North
+    #  Alignment {
+    #    Parent {
+    #      Domain = "CD"
+    #      Port = South
+    #    }
+    #    Displacement = [-0 -60]
+    #    Orientation = AntiParallel
+    #  }
+    #  DomainId = 3
+    #  Priority = 2
+      
+    #}
+  }
+} 
