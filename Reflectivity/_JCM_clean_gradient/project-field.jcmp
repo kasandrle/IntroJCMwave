@@ -1,0 +1,33 @@
+Project {
+  InfoLevel = 3
+  StorageFormat = Binary
+  Electromagnetics {
+    TimeHarmonic {
+      Scattering {
+        Accuracy {
+          Precision = 0.01
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+PostProcess {
+ ExportFields {
+   FieldBagPath = "project-field_results/fieldbag.jcm"
+    OutputQuantity =  "ElectricFieldEnergyDensity"# "ElectricFieldStrength"
+    OutputFileName = "project_results/fieldbag_near_field_xy.jcm"
+  #DomainIds = [2,3,4,5] #Standard nur 3
+  Cartesian {
+#    NGridPointsX = 100
+#    NGridPointsY = %?(cdyheight)e
+    Spacing = 1e-9
+    }#
+  }
+}
+
+

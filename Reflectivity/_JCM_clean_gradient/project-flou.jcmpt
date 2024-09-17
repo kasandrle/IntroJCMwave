@@ -1,0 +1,230 @@
+Project = {
+  InfoLevel = 10
+  StorageFormat = Binary
+  Electromagnetics {
+      TimeHarmonic {
+               Scattering {
+        FieldComponents = Electric
+        FiniteElementDegree = %(fem_deg)i
+
+       
+       }
+
+                  }
+  }
+}
+
+#<?
+#keys["cdyheight"]=keys["height"]+keys["height_offset_air"]+keys["height_offset_substrate"]+keys["height_etch_offset"]+keys["thickness_oxid"]
+#?>
+
+PostProcess {
+  DensityIntegration {
+  DomainIds = [3]
+  FieldBagPath  = "./project_results/fieldbag.jcm"
+  OutputFileName = "absorption.jcm"
+  Python {
+      IntegralName="norm_Ni"
+      Expression = "
+                    leerzeile = 1;
+                    #wa=9694.99
+                    #wa_O = 8387.76
+                    dis=1
+                    ax=plk[::2]*uol1 #uol1=1e-9
+                    ay=plk[1::2]*uol1 #Laenge in m
+                    ax_O=pok[::2]*uol1
+                    ay_O=pok[1::2]*uol1
+                    def abstand(x,y,x1, y1, x2,y2):
+                        x1x2=x1-x2
+                        y1y2=y1-y2
+                        lam = (x-x1)/(x1x2)
+                        yl = y1+lam*y1y2
+                        c = (yl -y).copy()
+                        return lam, c, yl                    
+                    
+                    for i in range(shape(ax)[0]):
+                        a=i
+                        b=i+1
+    
+                        if i==shape(ax)[0]-1:
+                            b=0
+        
+                        if ax[b] <= X[0] <= ax[a]:
+                            lam, dis, yl  =abstand(X[0],X[1],ax[a],ay[a],ax[b],ay[b]) 
+                    for i in range(shape(ax_O)[0]):
+                        a=i
+                        b=i+1
+    
+                        if i==shape(ax_O)[0]-1:
+                            b=0
+        
+                        if ax_O[b] <= X[0] <= ax_O[a]:
+                            lam_O, dis_O, yl_O  =abstand(X[0],X[1],ax_O[a],ay_O[a],ax_O[b],ay_O[b]) 
+
+                    #if pol== 0:
+                    #    E_used = abs(E[0])**2
+                    #elif pol == 1:
+                    #    E_used = abs(E[1])**2
+                    #else:
+                    #    print('ups')
+                    E_used = abs(E[0])*abs(E[0]) + abs(E[1])*abs(E[1]) + abs(E[2])*abs(E[2])
+                    value= E_used * exp(-wa*1e2*dis*dens_sin/sin((aoi)*pi / 180.)) * exp(-wa_O*1e2*(dis_O-dis)*dens_sio/sin((aoi)*pi / 180.)) #E[1] for p polarisation
+                    #value = value * (0.3994 * dens_sin * 8668.79 * 0.0045) *1e-7 * 1e9 * 1e9 /(pitch) #alle Einheiten in nm umgerechnet auch dx * dy
+             
+                    
+      "
+      Parameter {
+         Name = "E"
+   FieldValue {
+        Quantity = ElectricFieldStrength
+         }
+      }
+  Parameter {
+        Name = "dens_sin"
+        VectorValue = %(Ni_density)e
+      }
+  Parameter {
+        Name = "dens_sio"
+        VectorValue = %(NiO2_density)e
+      }
+   Parameter {
+        Name = "aoi"
+        VectorValue = %(angle_of_incidence)e
+      }
+   Parameter {
+        Name = "plk"
+        VectorValue = %(points_line_komplet)e
+      }
+    Parameter {
+        Name = "pok"
+        VectorValue = %(points_oxid_komplet)e
+      }
+    Parameter {
+        Name = "uol1"
+        VectorValue = %(uol1)e
+      }
+    Parameter {
+        Name = "pitch"
+        VectorValue = %(pitch)e
+      }
+    Parameter {
+        Name = "wa"
+        VectorValue = %(mac_Ni_Niflou)e
+      }
+    Parameter {
+        Name = "wa_O"
+        VectorValue = %(mac_Ni_NiO2flou)e
+      }
+    }
+      
+  }
+}
+    
+PostProcess {
+  DensityIntegration {
+  DomainIds = [2]
+  FieldBagPath  = "./project_results/fieldbag.jcm"
+  OutputFileName = "absorption_2.jcm"
+  Python {
+      IntegralName="norm_NiO2"
+      Expression = "
+                    leerzeile = 1;
+                    #wa=4234.66 #9694.99
+                    dis=1
+                    ax=plk[::2]*uol1
+                    ay=plk[1::2]*uol1
+                    def abstand(x,y,x1, y1, x2,y2):
+                        x1x2=x1-x2
+                        y1y2=y1-y2
+                        lam = (x-x1)/(x1x2)
+                        yl = y1+lam*y1y2
+                        c = (yl -y).copy()
+                        return lam, c, yl                    
+                    
+                    for i in range(shape(ax)[0]):
+                        a=i
+                        b=i+1
+    
+                        if i==shape(ax)[0]-1:
+                            b=0
+        
+                        if ax[b] <= X[0] <= ax[a]:
+                            lam, dis, yl  =abstand(X[0],X[1],ax[a],ay[a],ax[b],ay[b]) 
+                    
+                    #print(E[1])
+                    #print(abs(E[1])**2)
+                    #print(dot(E[1].conj().T,E[1]))
+                    #if pol== 0:
+                    #    E_used = abs(E[0])**2
+                    #elif pol == 1:
+                    #    E_used = abs(E[1])**2
+                    #else:
+                    #    print('ups')
+                    #E_used = pol[0]*abs(E[0])**2 + pol[1]*abs(E[1])**2
+                    E_used = abs(E[0])*abs(E[0]) + abs(E[1])*abs(E[1]) + abs(E[2])*abs(E[2])
+                    value= E_used * exp(-wa*1e2*dis*dens_sio/sin((aoi)*pi / 180.)) #E[1] for p polarisation
+                    #value = value * (0.45 * dens_sio * 11356.9 * 0.00688) *1e-7 * 1e9 * 1e9 /(pitch) #alle Einheiten in nm umgerechnet auch dx * dy
+                    
+                    
+      "
+      Parameter {
+         Name = "E"
+   FieldValue {
+        Quantity = ElectricFieldStrength
+         }
+      }
+  Parameter {
+        Name = "dens_sio"
+        VectorValue = %(NiO2_density)e
+      }
+   Parameter {
+        Name = "aoi"
+        VectorValue = %(angle_of_incidence)e
+      }
+   Parameter {
+        Name = "plk"
+        VectorValue = %(points_oxid_komplet)e
+      }
+    Parameter {
+        Name = "uol1"
+        VectorValue = %(uol1)e
+      }
+    Parameter {
+        Name = "pitch"
+        VectorValue = %(pitch)e
+      }
+    Parameter {
+        Name = "wa"
+        VectorValue = %(mac_Ni_NiO2flou)e
+      }
+    }
+      
+  }
+}
+
+
+
+#PostProcess {
+#  ExportFields {
+#   FieldBagPath = "project_results/fieldbag.jcm"
+##    OutputQuantity =  "ElectricFieldEnergyDensity"# "ElectricFieldStrength"
+#    OutputFileName = "project_results/fieldbag_near_field_xy.jcm"
+#   #DomainIds = [2,3,4,5] #Standard nur 3
+#   Cartesian {
+##    NGridPointsX = 100
+##    NGridPointsY = %(cdyheight)e
+#    Spacing = 0.5e-9
+#    }#
+#  }
+#}
+
+PostProcess {
+  FourierTransform {
+    NormalDirection = Y
+    FieldBagPath = "project_results/fieldbag.jcm"
+    OutputFileName = "project_results/reflected_diffraction_orders.jcm"
+    Format = JCM-ASCII
+  }
+}
+
+   

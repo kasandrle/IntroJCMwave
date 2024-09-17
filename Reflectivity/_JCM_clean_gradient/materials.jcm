@@ -1,0 +1,139 @@
+
+
+
+
+    Material {
+      Name = "vacuum"
+      Id = 1
+      RelPermittivity = 1
+      RelPermeability = 1
+}
+
+
+    Material {
+      Name = "oxide layer"
+      Id = 2
+      RelPermittivity = [( 0.98379801,  0.0059044684) ( 0,  0) ( 0,  0);
+( 0,  0) ( 0.98379801,  0.0059044684) ( 0,  0);
+( 0,  0) ( 0,  0) ( 0.98379801,  0.0059044684)]
+      RelPermeability = 1
+}
+
+
+    Material {
+      Name = "grating"
+      Id = 3
+      RelPermittivity = (0.980377561737373, 0.00906768644580105)
+      RelPermeability = 1
+}
+
+
+    Material {
+      Name = "layer"
+      Id = 4
+      RelPermittivity = (0.988793383677429, 0.00439538325432356)
+      RelPermeability = 1
+}
+
+
+    Material {
+      Name = "substrate"
+      Id = 5
+      RelPermittivity = (0.995254561979355, 0.000348460581034491)
+      RelPermeability = 1
+}
+
+
+    Material {
+      Name = "cont"
+      Id = 6
+      RelPermittivity = 1
+      RelPermeability = 1
+}
+
+
+  
+Material {
+      Name = "SiO2"
+      Id = 7
+  #    RelPermittivity = 2
+      RelPermeability = 1.0
+      RelPermittivity {
+    Python {
+        
+      Expression = "
+                    leerzeile = 1;
+                    
+                    def abstand(x,y,x1, y1, x2,y2):
+                        x1x2=x1-x2
+                        y1y2=y1-y2
+                        abs_richtung=power(power(x1x2,2)+power(y1y2,2),0.5);
+                        d = power(power((x-x1)*y1y2-(y-y1)*x1x2,2),0.5)/abs_richtung;
+                        lam = ((x1-x)*x1x2+(y1-y)*y1y2)/((-1)*(x1x2*x1x2)+(y1y2*y1y2))
+                        d_ecke = power((power(x-x1,2)+power(y-y1,2)),0.5)
+                        if abs(y1y2)<5e-9:
+                            lam=lam*(-1)
+                        return d, lam, d_ecke
+                        
+                    ax = points_oxid[::2]*uol1
+                    ay = points_oxid[1::2]*uol1
+                    d_array = []
+#
+                    for i in range(shape(ax)[0]):
+                        if i>=1 and i < shape(ax)[0]:
+                           a=i
+                           b=i+1
+                           if i==shape(ax)[0]-1:
+                                b=0
+                           d_temp, lam, d_ecke=abstand(X[0],X[1],ax[a],ay[a],ax[b],ay[b])
+                           d_array.append(d_temp)
+
+                    
+                     
+                     #print(X[0])
+                     #print(X[1])
+                    d=min(d_array)
+                    if d<max_a*uol1:
+                         value= n1+(n2-n1)*(1-power(d/max_a,g));
+                    else:
+                         value= n1
+                    
+                    
+                    value = value*eye(3,3);
+                    
+      "
+      Parameter {
+        Name = "n2"
+        VectorValue = (0.983798013621486, 0.0059044683740461)
+      }
+      Parameter {
+       Name = "n1"
+       VectorValue = (0.980377561737373, 0.00906768644580105)
+      }
+      Parameter {
+        Name = "g"
+        VectorValue = 1
+      }
+      Parameter {
+        Name = "points_oxid"
+        VectorValue = [-6 0 6 0 6 53 -6 53]
+      }
+      #Parameter {
+      #  Name = "points_oxid_y"
+      #  VectorValue = %?(points_oxid_y)e
+      #}
+      
+      Parameter {
+        Name = "max_a"
+        VectorValue = 1
+      }#
+      
+      Parameter {
+        Name = "uol1"
+        VectorValue = 1e-09
+      }
+
+      
+      }
+      }
+}

@@ -1,0 +1,108 @@
+
+
+
+<?
+
+for n, ii in enumerate(keys['nk']):
+    keys['permittivity_'] = ii**2
+    keys['RelPermeability_'] = 1 #keys['RelPermeability'][n]
+    keys['name_'] = keys['name_domain'][n]
+    keys['id_'] = n+1
+    
+
+    ?>
+    Material {
+      Name = "%(name_)s"
+      Id = %(id_)i
+      RelPermittivity = %(permittivity_)e
+      RelPermeability = %(RelPermeability_)e
+}
+
+<?
+#do nothing
+?>
+  
+Material {
+      Name = "SiO2"
+      Id = 7
+  #    RelPermittivity = 2
+      RelPermeability = 1.0
+      RelPermittivity {
+    Python {
+        
+      Expression = "
+                    leerzeile = 1;
+                    
+                    def abstand(x,y,x1, y1, x2,y2):
+                        x1x2=x1-x2
+                        y1y2=y1-y2
+                        abs_richtung=power(power(x1x2,2)+power(y1y2,2),0.5);
+                        d = power(power((x-x1)*y1y2-(y-y1)*x1x2,2),0.5)/abs_richtung;
+                        lam = ((x1-x)*x1x2+(y1-y)*y1y2)/((-1)*(x1x2*x1x2)+(y1y2*y1y2))
+                        d_ecke = power((power(x-x1,2)+power(y-y1,2)),0.5)
+                        if abs(y1y2)<5e-9:
+                            lam=lam*(-1)
+                        return d, lam, d_ecke
+                        
+                    ax = points_oxid[::2]*uol1
+                    ay = points_oxid[1::2]*uol1
+                    d_array = []
+#
+                    for i in range(shape(ax)[0]):
+                        if i>=1 and i < shape(ax)[0]:
+                           a=i
+                           b=i+1
+                           if i==shape(ax)[0]-1:
+                                b=0
+                           d_temp, lam, d_ecke=abstand(X[0],X[1],ax[a],ay[a],ax[b],ay[b])
+                           d_array.append(d_temp)
+
+                    
+                     
+                     #print(X[0])
+                     #print(X[1])
+                    d=min(d_array)
+                    if d<max_a*uol1:
+                         value= n1+(n2-n1)*(1-power(d/max_a,g));
+                    else:
+                         value= n1
+                    
+                    
+                    value = value*eye(3,3);
+                    
+      "
+      Parameter {
+        Name = "n2"
+        VectorValue = %(permittivity_2)e
+      }
+      Parameter {
+       Name = "n1"
+       VectorValue = %(permittivity_1)e
+      }
+      Parameter {
+        Name = "g"
+        VectorValue = %(exponent_g)e
+      }
+      Parameter {
+        Name = "points_oxid"
+        VectorValue = %(points_oxid_komplet)e
+      }
+      #Parameter {
+      #  Name = "points_oxid_y"
+      #  VectorValue = %(points_oxid_y)e
+      #}
+      
+      Parameter {
+        Name = "max_a"
+        VectorValue = %(max_a)e
+      }#
+      
+      Parameter {
+        Name = "uol1"
+        VectorValue = %(uol1)e
+      }
+
+      
+      }
+      }
+}

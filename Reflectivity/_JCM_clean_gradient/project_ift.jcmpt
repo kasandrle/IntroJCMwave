@@ -1,0 +1,52 @@
+Project {
+  InfoLevel = 1
+  StorageFormat = Pinboard
+  Electromagnetics {
+    TimeHarmonic {
+      Scattering {
+        FieldComponents = Electric
+	PML {
+        }
+        Accuracy {
+	  Precision = 1e-2
+          Refinement {
+            MaxNumberSteps = 0
+          }
+        }
+      }
+    }
+  }
+}
+
+
+PostProcess {
+  FourierTransform {
+    NormalDirection = Y
+    FieldBagPath = "project_results/fieldbag.jcm"
+    OutputFileName = "project_results/transmitted_fourier_transform.jcm"
+    NRefinements = 1
+    #Rotation = X:Z:-Y
+  }
+}
+
+PostProcess {
+  OpticalImaging {
+    InputFileName = "project_results/transmitted_fourier_transform.jcm"
+    OutputFileName = "project_results/image_fourier_transform.jcm"
+    OpticalSystem {
+      SpotMagnification = 2.0
+    }
+  }
+}
+
+PostProcess {
+  ExportFields {
+    FieldBagPath = "project_results/image_fourier_transform.jcm"
+    OutputFileName = "project_results/coherent_image.jcm"
+    Cartesian {
+      NGridPointsX = 100 #GridPointsX = [-1000e-9 : 10e-9 : 1000e-9]
+      GridPointsY = 0 #100 #GridPointsY = [-1000e-9 : 10e-9 : 1000e-9]
+      NGridPointsZ = 100 #GridPointsZ = [0 : 200e-9 : 1000e-9]
+    }
+  }
+}
